@@ -1,3 +1,10 @@
+// Things to do still:
+    // How to show the departments that the user created appear in prompts?
+    // Converting newly created department names into ID's for addRole Function
+    // Need to figure out how to connect PK + FK in employee table
+    // Add employee
+
+
 // Required Dependencies
 const mysql = require('mysql2');
 const cTable = require('console.table');
@@ -50,6 +57,54 @@ function addDepartment() {
         console.log(`Added ${response.newDepartment} to the database`);
         // SQL language to add the users response into the department table
         const sql = `INSERT INTO department (name) VALUES ("${response.newDepartment}");`;
+        // Queries SQL using above line of code to actually make the new row
+        db.query(sql, (err, result) => {
+            if (err) {
+                console.log(err);
+                process.exit();
+            }
+            // Sends user back to initial/main prompts
+            init();
+        });
+    });
+};
+
+// Inquirer Prompt for Adding a New Role
+const newRole = [
+    {
+        type: 'input',
+        message: 'What is the name of the role?',
+        name: 'newRole',
+    },
+    {
+        type: 'input',
+        message: 'What is the salary of the role?',
+        name: 'salary',
+    },
+    {
+        type: 'list',
+        message: 'Which department does the role belong to?',
+        name: 'department',
+        choices: [
+            'Sales',
+            'Engineering',
+            'Finance',
+            'Legal'
+        ] // How to show the departments that the user created appear here?
+    },
+];
+
+// Adding a new role to the roles table
+function addRole() {
+    // Prompts the user for their response
+    inquirer.prompt(newRole).then((response) => {
+        // Logs their response to the console
+        console.log(`Added ${response.department} to the database`);
+        // SQL language to add the users response into the department table
+        const sql = `INSERT INTO department (name) VALUES ("${response.newDepartment}");
+
+        INSERT INTO roles (title, salary, department_id)
+        VALUES ("${response.newRole}", "${response.salary}", ${response.department});`;
         // Queries SQL using above line of code to actually make the new row
         db.query(sql, (err, result) => {
             if (err) {
@@ -125,8 +180,7 @@ function init() {
 				break;
 
 			case 'Add Role':
-				//create a function for inquirer to prompt user about role
-				init();
+                addRole();
 				break;
 
 			case 'View All Departments':

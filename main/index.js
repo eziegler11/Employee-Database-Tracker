@@ -14,6 +14,7 @@ const db = mysql.createConnection(
 	console.log(`Connected to the employee database.`)
 );
 
+// Inquirer Prompts for Initial/Main User Navigation
 const prompts = [
 	{
 		type: 'list',
@@ -32,7 +33,35 @@ const prompts = [
 	},
 ];
 
-// JOIN department ON(department.id = roles.department_id)
+// Inquirer Prompt for Adding a New Department
+const newDepartment = [
+    {
+        type: 'input',
+        message: 'What is the name of the department?',
+        name: 'newDepartment',
+    },
+];
+
+// Adding a new department to the department table
+function addDepartment() {
+    // Prompts the user for their response
+    inquirer.prompt(newDepartment).then((response) => {
+        // Logs their response to the console
+        console.log(`Added ${response.newDepartment} to the database`);
+        // SQL language to add the users response into the department table
+        const sql = `INSERT INTO department (name) VALUES ("${response.newDepartment}");`;
+        // Queries SQL using above line of code to actually make the new row
+        db.query(sql, (err, result) => {
+            if (err) {
+                console.log(err);
+                process.exit();
+            }
+            // Sends user back to initial/main prompts
+            init();
+        });
+    });
+};
+
 
 function init() {
 	inquirer.prompt(prompts).then((response) => {
@@ -46,6 +75,7 @@ function init() {
 
                 
                 ;`;
+                // Need to figure out how to connect PK + FK in employee table
 				db.query(sql, (err, result) => {
 					if (err) {
 						console.log(err);
@@ -54,7 +84,6 @@ function init() {
 					console.table(result);
                     init();
 				});
-                // left join and inner join
 				break;
 
 			case 'Add Employee':
@@ -101,7 +130,7 @@ function init() {
 				break;
 
 			case 'View All Departments':
-				var sql = 'select * from department;';
+				var sql = 'SELECT * FROM department;';
 				db.query(sql, (err, result) => {
 					if (err) {
 						console.log(err);
@@ -113,6 +142,7 @@ function init() {
 				break;
 
 			case 'Add Department':
+                addDepartment()
 				break;
 
 			case 'Quit':

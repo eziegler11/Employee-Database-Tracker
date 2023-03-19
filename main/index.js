@@ -32,15 +32,31 @@ const prompts = [
 	},
 ];
 
+// JOIN department ON(department.id = roles.department_id)
+
 function init() {
 	inquirer.prompt(prompts).then((response) => {
 		console.log(response.start);
 
 		switch (response.start) {
 			case 'View All Employees':
+                var sql = `SELECT employee.id, first_name, last_name, title, name AS department, salary, manager_id AS manager FROM employee INNER JOIN roles ON employee.role_id = roles.id LEFT JOIN department ON
+                department.id = roles.department_id
+                
+
+                
+                ;`;
+				db.query(sql, (err, result) => {
+					if (err) {
+						console.log(err);
+						process.exit();
+					}
+					console.table(result);
+                    init();
+				});
                 // left join and inner join
-				init();
 				break;
+
 			case 'Add Employee':
                 // another function with inquirer
                 // inquirer will receive employee name, etc
@@ -60,18 +76,17 @@ function init() {
                 // 
 				init();
 				break;
+
 			case 'Update Employee Role':
 				init();
 				break;
+
 			case 'View All Roles':
-                var sql = `SELECT roles.id, title, name AS department, salary, FROM roles
+                var sql = `SELECT roles.id, title, name AS department, salary FROM roles
                 INNER JOIN department
-                ON roles.department_id = department.id
-                
-                ;`;
+                ON roles.department_id = department.id;`;
 				db.query(sql, (err, result) => {
 					if (err) {
-						console.log('****');
 						console.log(err);
 						process.exit();
 					}
@@ -79,15 +94,16 @@ function init() {
                     init();
 				});
 				break;
+
 			case 'Add Role':
 				//create a function for inquirer to prompt user about role
 				init();
 				break;
+
 			case 'View All Departments':
 				var sql = 'select * from department;';
 				db.query(sql, (err, result) => {
 					if (err) {
-						console.log('****');
 						console.log(err);
 						process.exit();
 					}
@@ -95,8 +111,10 @@ function init() {
                     init();
 				});
 				break;
+
 			case 'Add Department':
 				break;
+
 			case 'Quit':
 				process.exit();
 		}

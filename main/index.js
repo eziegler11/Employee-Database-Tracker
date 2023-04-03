@@ -1,7 +1,3 @@
-// Things to do still:
-// Add employee
-// Update employee role
-
 // Required Dependencies
 const mysql = require('mysql2');
 const cTable = require('console.table');
@@ -12,7 +8,7 @@ const db = mysql.createConnection(
 	{
 		host: 'localhost',
 		user: 'root',
-		password: 'Elke!12162020',
+		password: 'Colo!12',
 		database: 'employee_db',
 	},
 	console.log(`Connected to the employee database.`)
@@ -142,106 +138,30 @@ function createEmployee() {
 }
 
 function updateRole() {
-	// Look into employee table and get back array of employee full names (pushing into inquirer choices array)
-		// Shows all employee names
-		function allEmployees() {
-			// variable to show names from the employees table
-			let sql = 'SELECT * FROM employee';
-	
-			// Runs the query
-			db.query(sql, async function (err, result) {
-				// Throws an error
-				if (err) throw err;
-				// Iterates through employee names & ids and pushes to array
-				for (let i = 0; i < result.length; i++) {
-					employeeNames.push(result[i].first_name.concat(" ", result[i].last_name));
-					employeeIdName[result[i].first_name.concat(" ", result[i].last_name)] = result[i].id;
-				}
-			});
-		}
-	
-		// Array to store the employee names
-		let employeeNames = [];
-		// Object to store the employee ID's
-			// - create a look up object that converts employee full name to employee ID (employeeIdName)
-		const employeeIdName = {};
-	
-		allEmployees();
-
-		function allRoles() {
-			// variable to show all in the roles table
-			let sql = 'SELECT * FROM roles';
-	
-			// Runs the query
-			db.query(sql, async function (err, result) {
-				// Throws an error
-				if (err) throw err;
-				// Iterates through role names & ids and pushes to array
-				for (let i = 0; i < result.length; i++) {
-					employeeRoles.push(result[i].title);
-					roleIdTitle[result[i].title] = result[i].id;
-				}
-			});
-		}
-	
-		// Array to store all of the roles
-		let employeeRoles = [];
-		// Object to store the role ID's
-		const roleIdTitle = {};
-	
-		allRoles();
-
-			// Inquirer Prompts for updating employee role
-	const updateEmployee = [
+	inquirer.prompt([
 		{
-			type: 'list',
-			message: "Which employee's role do you want to update?",
-			name: 'employee',
-			choices: employeeNames,
+			name: "roleId",
+			type: "input",
+			message: "What is the ID of the employee you are trying to update?"
 		},
 		{
-			type: 'list',
-			message: "Which role do you want to assign the selected employee?",
-			name: 'role',
-			choices: employeeRoles,
-		},
-	];
-
-	// Prompts the user for their response
-	inquirer.prompt(updateEmployee).then((response) => {
-		const sql =
-			`UPDATE employee SET role_id = ("${roleIdTitle[response.role]}") WHERE id = ("${employeeIdName[response.employee]}");`;
-
-		db.query(
-			sql,
-			[
-				employeeIdName[response.employee],
-				roleIdTitle[response.role],
-			],
-			function (err, result) {
-				if (err) {
-					console.log(err);
-					process.exit();
-				}
-				console.log(
-					`Updated employee's role`
-				);
-
-				init();
+			name: "newRole",
+			type: "input",
+			message: "What is the name of the new role?"
+		}
+	]).then(response => {
+		db.query("UPDATE roles SET ? WHERE ?;", 
+		[
+			{
+				title: response.newRole
+			},
+			{
+				id: response.roleId
 			}
-		);
-	});
+		]);
 
-	// inquirer showing list of employee full names (use array in step 1)
-	// convert chosen full name into employee ID (use employeeIdName to get ID)
-
-	// look into roles table and get back array of role titles (pushing into inquirer choices array)
-	// - create a look up array that converts role title to role ID (roleIdTitle)
-	// inquirer showing list of role titles
-	// convert chosen role title into role ID
-
-	// update employee table by setting role ID equals chosen role ID WHERE ID equals chosen employee ID
-}
+		init();
+})};
 
 // View all employees
 function viewEmployees() {

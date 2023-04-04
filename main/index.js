@@ -159,7 +159,7 @@ function updateRole() {
 				id: response.roleId
 			}
 		]);
-
+		console.log("Updated employee's role")
 		init();
 })};
 

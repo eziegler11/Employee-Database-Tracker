@@ -4,9 +4,6 @@
 
 I was motivated to create this Command Line application with Node.JS to further my knowledge and become more comfortable with working in the command line with Node. I built this app as a very intuitive and easy way to keep track of employees and departments within a company. The code within the app updates the tables as new data is entered or removed. It makes keeping track of an organization a lot easier and more efficient. I got to work with MySQL2 a ton and make my own queries in order for the tables to talk to each other and that was a big learning experience for me.
 
-I was motivated to create this project as a need to be cost efficient and self sufficient, when it comes to creating a logo. I built this because I wanted a quick and interactive way to develop a logo, without needing the use of a graphic designer or multiple resources. It's a one stop shop. It solves the problem of being able to create multiple logo files with hardly any effort, so you can really find the logo that works for you. I learned a ton about using defining and using classes, inheritance, testing with Jest, and importing + exporting between different JS files.
-
-
 ## Installation
 
 The steps to install my project are as follows:
@@ -14,25 +11,25 @@ The steps to install my project are as follows:
 - Clone or fork my code from GitHub
 - Install the required dependencies (Inquirer, Console.Table, MySQL2)
 - Source the Schema.sql file and then the Seeds.sql file
-- Run the file from the command line using "node index.js"
+- Run the file from the command line using "npm start"
 
 ## Usage
 
 Here is a link to a video of the file running:
 
-[Video Link](https://drive.google.com/file/d/1m4lgAym4SVdwRyNXfQoPTLx9FFFer0ye/view)
+[Video Link](https://drive.google.com/file/d/1LwpK3Sfv1GN_VAtm6_8U5egM6DkrSfC5/view)
 
-Here is an example of the of the prompts in the app:
+Here is an example of viewing all departments in the app:
 
-![Photo of prompts used to generate a logo with Inquirer](assets/images/screenshot_3.png)
+![View All Departments](Assets/Images/Screenshot1.png)
 
-Here is an example of the logo produced after running the app:
+Here is an example of adding a new employee in the app:
 
-![Photo of the logo produced after the prompts have been answered](assets/images/screenshot_2.png)
+![Add New Employee](Assets/Images/Screenshot2.png)
 
-Here is an example of passed tests using Jest:
+Here is an example of updating an employee role in the app:
 
-![Photo of app after testing is passed with Jest](assets/images/screenshot_1.png)
+![Update Employee Role](Assets/Images/Screenshot3.png)
 
 ## License
 
